@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: initial-schema
+      author: sterkhov
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/2022-10-28_user-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: create-default-users
+      author: sterkhov
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/2022-10-28_user-data.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: create-one-phase-result-table
+      author: sterkhov
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: sql/2022-11-02_one-phase-result-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
