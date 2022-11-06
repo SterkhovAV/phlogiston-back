@@ -17,10 +17,4 @@ class MainController(
     fun firstPage(): String {
         return "firstPage"
     }
-
-    @ResponseBody
-    @GetMapping("/get-user")
-    fun getd(): UserDto {
-        return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)!!
-    }
 }

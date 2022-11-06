@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import ru.sterkhovav.phlogiston.dto.UserDto
 import ru.sterkhovav.phlogiston.dto.UserRegistrationRequestDto
 import ru.sterkhovav.phlogiston.service.UserServiceImpl
 import ru.sterkhovav.phlogiston.utils.ResponseMessage
@@ -45,6 +46,12 @@ class AuthController(
             ResponseMessage("${SecurityContextHolder.getContext().authentication.name} login success"),
             HttpStatus.OK
         )
+    }
+
+    @ResponseBody
+    @GetMapping("/get-user")
+    fun getd(): UserDto {
+        return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)!!
     }
 
 }
