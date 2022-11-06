@@ -4,16 +4,13 @@ import org.springframework.stereotype.Service
 import ru.sterkhovav.phlogiston.dao.repository.OnePhaseResultRepository
 import ru.sterkhovav.phlogiston.dto.OnePhaseRequestDto
 import ru.sterkhovav.phlogiston.dto.OnePhaseResultDto
-import ru.sterkhovav.phlogiston.dto.toEntity
 import ru.sterkhovav.phlogiston.waterSteamCounter.OnePhaseParam
 import ru.sterkhovav.phlogiston.waterSteamCounter.countOnePhaseParams
 
 interface OnePhaseService {
-
     fun countParams(request: OnePhaseRequestDto): OnePhaseResultDto
-    fun save(result: OnePhaseResultDto, userLogin: String)
+    fun save(result: OnePhaseResultDto, username: String)
     fun getUserResults(userLogin: String): List<OnePhaseResultDto>
-
 }
 
 @Service
@@ -56,12 +53,12 @@ class OnePhaseServiceImpl(
         )
     }
 
-    override fun save(result: OnePhaseResultDto, userLogin: String) {
-        service.save(result.toEntity(userLogin))
+    override fun save(result: OnePhaseResultDto, username: String) {
+        service.save(result.toEntity(username))
     }
 
     override fun getUserResults(userLogin: String): List<OnePhaseResultDto> {
-        return service.getByUserLogin(userLogin)
+        return service.getByAuthor(userLogin)
     }
 
 }

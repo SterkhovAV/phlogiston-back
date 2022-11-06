@@ -6,6 +6,25 @@
 <link rel="icon" href="favicon.ico">
 <body>
 <div id="root"></div>
-<script th:src="@{appPage.js}"></script>
+AUDFFF
+<div class="central-form">
+    <div class="authorisation-form">
+        <form method="POST" action="/auth/login" >
+            <h3 class="form-heading text-center" id="page-name">Авторизация</h3>
+            <div>
+                <input class="login-input" name="username" type="text"
+                       placeholder="Имя пользователя"
+                       id="username" required/>
+            </div>
+            <div>
+                <input class="login-input" name="password" type="password"
+                       placeholder="Пароль"
+                       id="password" required/>
+            </div>
+            <button class="button-login" id="button-login" type="submit">Войти</button>
+        </form>
+    </div>
+</div>
+<script th:src="@{js/appPage.js}"></script>
 </body>
 </html>
