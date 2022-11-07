@@ -40,7 +40,7 @@ API
 Base address - http://localhost:7080/ (you can change it in "application.properties")
 
 
-Count one phase params - http://localhost:7080/onePhase/calc (POST)
+#### Count one phase params - http://localhost:7080/onePhase/calc (POST)
 Request:
 
 {
@@ -77,7 +77,62 @@ Answer:
 "specificHeatCapacityV": null
 }
 
-Count one phase params - http://localhost:7080/onePhase/calc (POST)
+#### Save result to authorized user - http://localhost:7080/onePhase/save (POST)
+Request:
+{
+"pressure": 10.0,
+"temperature": 400.0,
+"specificVolume": 0.017540093214404435,
+"density": 57.012239774117674,
+"specificEntropy": null,
+"specificEnthalpy": null,
+"specificInternalEnergy": null,
+"specificHeatCapacityP": null,
+"specificHeatCapacityV": null
+}
 
+Answer will be 200 HTTP status with "Saved" message
+
+#### Get results to authorized user - http://localhost:7080/onePhase/get-user-results (GET)
+
+Answer empty list or results list
+
+
+
+####Authentication of user http://localhost:7080/auth/login (POST)
+with params "username" and "password"
+
+http://localhost:7080/auth/login?username=admin&password=admin
+
+####Get authenticated user info http://localhost:7080/auth/get-user(GET)
+
+####Registration of new user http://localhost:7080/auth/registration (POST)
+Request:
+{
+"username": "user1",
+"password": "admin",
+"email": "user2@lsdsdsdweo11l.ru",
+"lastName": "user2",
+"firstName": "user2",
+"roleId": "2"
+}
+
+Full list of params
+data class UserRegistrationRequestDto(
+val username: String,
+var password: String,
+val email: String,
+val lastName: String,
+val firstName: String,
+val middleName: String?,
+val organisation: String?,
+val position: String?,
+val phone: String?,
+val roleId: Int,
+)
+
+"1" role id = ROLE_ADMIN
+"2" role id = ROLE_USER
+!!! NOW OPEN ADMIN REGISTRATION FOR TESTS, THIS WILL BE CHANGED IN FUTURE
 
 

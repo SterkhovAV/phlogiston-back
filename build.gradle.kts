@@ -30,7 +30,9 @@ dependencies {
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-math3
 	implementation("org.apache.commons:commons-math3:3.6.1")
-    runtimeOnly("org.postgresql:postgresql")
+	// https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52
+	implementation("com.vladmihalcea:hibernate-types-52:2.20.0")
+	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")

@@ -49,12 +49,9 @@ data class User(
     @field:Column(name = "last_time_update_password", nullable = false)
     var lastTimeUpdatePassword: OffsetDateTime,
 
-    @field:Column(name = "role_id", nullable = false)
-    var roleId: Int,
-
-//        @OneToOne(fetch = FetchType.EAGER)
-//        @JoinColumn(name = "user_role", referencedColumnName = "name")
-//        val role:Role? = null,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    val role: Role,
 
     @field:Column(name = "failed_login_counter", nullable = false)
     var failedLoginCounter: Int = 0,
@@ -65,7 +62,7 @@ data class User(
     ) {
     fun toDto() = UserDto(
         username, active, email, lastName, firstName, middleName, organisation, position,
-        phone, createDate, lastTimeUpdatePassword, roleId
+        phone, createDate, lastTimeUpdatePassword, role.toDto()
     )
 }
 

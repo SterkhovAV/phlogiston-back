@@ -9,7 +9,7 @@ import ru.sterkhovav.phlogiston.dao.models.User
 class UserDetailsImpl(private val user: User) : UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
+        return mutableListOf(SimpleGrantedAuthority(user.role.name))
     }
 
     override fun getPassword(): String = user.password

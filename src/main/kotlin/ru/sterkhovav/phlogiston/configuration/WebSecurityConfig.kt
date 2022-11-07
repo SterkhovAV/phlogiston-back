@@ -43,7 +43,6 @@ class WebSecurityConfig(val userDetailsServiceImpl: UserDetailsServiceImpl) : We
     }
 
     @Bean
-    fun getPasswordEncoder(): PasswordEncoder? {
-        return BCryptPasswordEncoder()
-    }
+    fun getPasswordEncoder(): PasswordEncoder? = BCryptPasswordEncoder()
+
 }

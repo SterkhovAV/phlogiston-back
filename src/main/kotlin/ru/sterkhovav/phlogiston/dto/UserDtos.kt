@@ -1,6 +1,10 @@
 package ru.sterkhovav.phlogiston.dto
 
+import org.springframework.beans.factory.annotation.Autowired
+import ru.sterkhovav.phlogiston.dao.models.Role
 import ru.sterkhovav.phlogiston.dao.models.User
+import ru.sterkhovav.phlogiston.dao.repository.RoleRepository
+import ru.sterkhovav.phlogiston.service.RoleServiceImpl
 import java.time.OffsetDateTime
 
 data class UserLoginRequest(
@@ -20,7 +24,10 @@ data class UserRegistrationRequestDto(
     val phone: String?,
     val roleId: Int,
 ) {
-    fun toEntity() = User(
+
+
+
+    fun toEntity(roleServiceImpl:RoleServiceImpl) = User(
         username = this.username,
         active = true,
         password = this.password,
@@ -33,7 +40,7 @@ data class UserRegistrationRequestDto(
         phone = this.phone,
         createDate = OffsetDateTime.now(),
         lastTimeUpdatePassword = OffsetDateTime.now(),
-        roleId = this.roleId,
+        role = roleServiceImpl.getRoleById(this.roleId.toLong()),
     )
 }
 
@@ -50,7 +57,7 @@ data class UserDto(
     val phone: String? = null,
     val createDate: OffsetDateTime,
     val lastTimeUpdatePassword: OffsetDateTime,
-    val roleId: Int
+    val role: RoleDto
 )
 
 

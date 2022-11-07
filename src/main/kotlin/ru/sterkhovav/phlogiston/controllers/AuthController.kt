@@ -50,8 +50,8 @@ class AuthController(
 
     @ResponseBody
     @GetMapping("/get-user")
-    fun getd(): UserDto {
-        return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)!!
+    fun getUser(): UserDto {
+        return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)
     }
 
 }

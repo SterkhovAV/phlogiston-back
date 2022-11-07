@@ -15,7 +15,7 @@ interface OnePhaseService {
 
 @Service
 class OnePhaseServiceImpl(
-    private val service: OnePhaseResultRepository
+    private val onePhaseResultRepository: OnePhaseResultRepository
 ) : OnePhaseService {
 
     override fun countParams(request: OnePhaseRequestDto): OnePhaseResultDto {
@@ -54,11 +54,11 @@ class OnePhaseServiceImpl(
     }
 
     override fun save(result: OnePhaseResultDto, username: String) {
-        service.save(result.toEntity(username))
+        onePhaseResultRepository.save(result.toEntity(username))
     }
 
     override fun getUserResults(userLogin: String): List<OnePhaseResultDto> {
-        return service.getByAuthor(userLogin)
+        return onePhaseResultRepository.getByAuthor(userLogin)
     }
 
 }
