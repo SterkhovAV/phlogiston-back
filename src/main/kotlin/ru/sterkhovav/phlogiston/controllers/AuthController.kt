@@ -12,14 +12,13 @@ import ru.sterkhovav.phlogiston.service.UserServiceImpl
 import ru.sterkhovav.phlogiston.utils.ResponseMessage
 
 
-@Controller
+@RestController
 @RequestMapping(path = [AUTH_BASE_API])
 class AuthController(
     private val userServiceImpl: UserServiceImpl,
     private val passwordEncoder: PasswordEncoder,
 ) {
 
-    @ResponseBody
     @PostMapping("/registration")
     fun registration(
         @RequestBody userRegistrationRequestDto: UserRegistrationRequestDto,
@@ -30,7 +29,6 @@ class AuthController(
         return ResponseEntity<ResponseMessage>(ResponseMessage("User successfully saved"), HttpStatus.OK)
     }
 
-    @ResponseBody
     @GetMapping("/loginError")
     fun loginError(): ResponseEntity<ResponseMessage> {
         return ResponseEntity<ResponseMessage>(
@@ -39,7 +37,6 @@ class AuthController(
         )
     }
 
-    @ResponseBody
     @GetMapping("/loginSuccess")
     fun loginSuccess(): ResponseEntity<ResponseMessage> {
         return ResponseEntity<ResponseMessage>(
@@ -48,7 +45,6 @@ class AuthController(
         )
     }
 
-    @ResponseBody
     @GetMapping("/get-user")
     fun getUser(): UserDto {
         return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)

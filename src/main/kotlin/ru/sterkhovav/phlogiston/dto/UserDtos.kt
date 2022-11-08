@@ -27,7 +27,7 @@ data class UserRegistrationRequestDto(
 
 
 
-    fun toEntity(roleServiceImpl:RoleServiceImpl) = User(
+    fun toEntity(role:Role) = User(
         username = this.username,
         active = true,
         password = this.password,
@@ -40,7 +40,7 @@ data class UserRegistrationRequestDto(
         phone = this.phone,
         createDate = OffsetDateTime.now(),
         lastTimeUpdatePassword = OffsetDateTime.now(),
-        role = roleServiceImpl.getRoleById(this.roleId.toLong()),
+        role = role,
     )
 }
 

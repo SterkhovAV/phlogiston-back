@@ -20,7 +20,7 @@ interface UserService {
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val roleServiceImpl:RoleServiceImpl
+    private val roleServiceImpl: RoleServiceImpl
 ) : UserService {
 
     override fun getUserByUsername(username: String): UserDto {
@@ -29,8 +29,8 @@ class UserServiceImpl(
 
     override fun validateUser(user: UserRegistrationRequestDto) {
         val errors = mutableListOf<String>()
-        if(validateUsername(user.username)) errors.add("User with this name exists")
-        if(validateEmail(user.email)) errors.add("User with this email exists")
+        if (validateUsername(user.username)) errors.add("User with this name exists")
+        if (validateEmail(user.email)) errors.add("User with this email exists")
         if (errors.isNotEmpty()) throw UserNotCreatedException(errors)
 
     }
@@ -45,7 +45,11 @@ class UserServiceImpl(
 
     @Transactional
     override fun register(userRegistrationRequestDto: UserRegistrationRequestDto) {
-        userRepository.save(userRegistrationRequestDto.toEntity(roleServiceImpl))
+        userRepository.save(
+            userRegistrationRequestDto.toEntity(
+                roleServiceImpl.getRoleById(userRegistrationRequestDto.roleId.toLong())
+            )
+        )
     }
 }
 
