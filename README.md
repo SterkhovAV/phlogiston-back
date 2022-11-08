@@ -82,6 +82,7 @@ Answer:
 
 #### Save result (for authorized user) - http://localhost:7080/onePhase/save (POST)
 Request:
+
         {
         "pressure": 10.0,
         "temperature": 400.0,
@@ -109,16 +110,18 @@ http://localhost:7080/auth/login?username=admin&password=admin
 
 #### Registration of new user http://localhost:7080/auth/registration (POST)
 Request:
-{
-"username": "user1",
-"password": "admin",
-"email": "user2@lsdsdsdweo11l.ru",
-"lastName": "user2",
-"firstName": "user2",
-"roleId": "2"
-}
+
+    {
+    "username": "user1",
+    "password": "admin",
+    "email": "user2@lsdsdsdweo11l.ru",
+    "lastName": "user2",
+    "firstName": "user2",
+    "roleId": "2"
+    }
 
 Full list of params that can be added (some of them can be nullable)
+
     data class UserRegistrationRequestDto(
     val username: String,
     var password: String,
