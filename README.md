@@ -100,14 +100,14 @@ Answer will be 200 HTTP status with "Saved" message
 
 Answer will be empty list or results list
 
-####Authentication of user http://localhost:7080/auth/login (POST)
+#### Authentication of user http://localhost:7080/auth/login (POST)
 with params "username" and "password"
 
 http://localhost:7080/auth/login?username=admin&password=admin
 
-####Get authenticated user info http://localhost:7080/auth/get-user(GET)
+#### Get authenticated user info http://localhost:7080/auth/get-user(GET)
 
-####Registration of new user http://localhost:7080/auth/registration (POST)
+#### Registration of new user http://localhost:7080/auth/registration (POST)
 Request:
 {
 "username": "user1",
