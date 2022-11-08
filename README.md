@@ -3,6 +3,7 @@ front-end created by https://github.com/Chernikov-Daniil
 back-end created by https://github.com/SterkhovAV
 
 Web-app for counting water and steam properties by IAWSP-97 methodic.
+
 Stack of technoligies: Spring Boot 2.7.5, Spring Security, Hibernate, Spring JPA, Liquibase
 Build by Gradle
 
