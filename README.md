@@ -15,15 +15,14 @@ If you don't want to change base-login-password:
     - create local database and user;
     - start SQL Shell (login to database "postgres" under login "postgres" and your password)
 
+       CREATE DATABASE phlogiston;
+       CREATE USER phlogiston_user WITH PASSWORD 'password';
+       GRANT ALL PRIVILEGES ON DATABASE phlogiston to phlogiston_user;
+       \c phlogiston;
+       CREATE SCHEMA phlogiston;
+       GRANT ALL PRIVILEGES ON SCHEMA phlogiston to phlogiston_user;
 
-           CREATE DATABASE phlogiston;
-           CREATE USER phlogiston_user WITH PASSWORD 'password';
-           GRANT ALL PRIVILEGES ON DATABASE phlogiston to phlogiston_user;
-           \c phlogiston;
-           CREATE SCHEMA phlogiston;
-           GRANT ALL PRIVILEGES ON SCHEMA phlogiston to phlogiston_user;
-
-      now database and user created!
+now database and user created!
 
 ### problems solving
  Data base drop instruction:
