@@ -12,7 +12,7 @@ Build by Gradle
 - PostgreSQL
 - change in "application.properties"
 
-       spring.datasource.url=your DB adress
+       spring.datasource.url=your DB address
        spring.datasource.username=your login
        spring.datasource.password=your password
 
@@ -49,55 +49,55 @@ Base address - http://localhost:7080/ (you can change it in "application.propert
 #### Count one phase params - http://localhost:7080/onePhase/calc (POST)
 Request:
 
-    {
-    "pressure": 10.0,
-    "temperature": 400,
-    "specificVolumeConfim": true,
-    "densityConfim": true
-    }
+       { 
+           "initialParams":{"PRESSURE":10,"TEMPERATURE":500},
+           "requestParams": [
+               "SPECIFIC_VOLUME",
+               "DENSITY"
+           ]
+       }
 
+Now, as initial params you can use only temperature and pressure.
 !! Temperature in K !!
 !! Pressure in MPa !!
 
 
 You can add to request this params if it needable:
 
-  - specificVolumeConfim
-  - densityConfim
-  - specificEntropyConfim 
-  - specificEnthalpyConfim 
-  - specificInternalEnergyConfim 
-  - specificHeatCapacityPConfim 
-  - specificHeatCapacityVConfim
+       SPECIFIC_VOLUME, 
+       DENSITY, 
+       SPECIFIC_ENTROPY, 
+       SPECIFIC_ENTHALPY, 
+       SPECIFIC_INTERNAL_ENERGY,
+       SPECIFIC_HEAT_CAPACITY_P, 
+       SPECIFIC_HEAT_CAPACITY_V
 
 Answer:
 
-    {
-    "pressure": 10.0,
-    "temperature": 400.0,
-    "specificVolume": 0.017540093214404435,
-    "density": 57.012239774117674,
-    "specificEntropy": null,
-    "specificEnthalpy": null,
-    "specificInternalEnergy": null,
-    "specificHeatCapacityP": null,
-    "specificHeatCapacityV": null
-    }
+       {
+           "initialParams": {
+               "PRESSURE": 10.0,
+               "TEMPERATURE": 500.0
+           },
+           "countResult": {
+               "SPECIFIC_VOLUME": 0.01972474672402399,
+               "DENSITY": 50.697735894476054
+           }
+       }
 
 #### Save result (for authorized user) - http://localhost:7080/onePhase/save (POST)
 Request:
 
-    {
-    "pressure": 10.0,
-    "temperature": 400.0,
-    "specificVolume": 0.017540093214404435,
-    "density": 57.012239774117674,
-    "specificEntropy": null,
-    "specificEnthalpy": null,
-    "specificInternalEnergy": null,
-    "specificHeatCapacityP": null,
-    "specificHeatCapacityV": null
-    }
+       {
+           "initialParams": {
+               "PRESSURE": 10.0,
+               "TEMPERATURE": 500.0
+           },
+           "countResult": {
+               "SPECIFIC_VOLUME": 0.01972474672402399,
+               "DENSITY": 50.697735894476054
+           }
+       }
 
 Answer will be 200 HTTP status with "Saved" message
 
@@ -110,34 +110,34 @@ with params "username" and "password"
 
 http://localhost:7080/auth/login?username=admin&password=admin
 
-#### Get authenticated user info http://localhost:7080/auth/get-user(GET)
+#### Get authenticated user info http://localhost:7080/auth/get-user (GET)
 
 #### Registration of new user http://localhost:7080/auth/registration (POST)
 Request:
 
-    {
-    "username": "user1",
-    "password": "admin",
-    "email": "user2@lsdsdsdweo11l.ru",
-    "lastName": "user2",
-    "firstName": "user2",
-    "roleId": "2"
-    }
+       {
+       "username": "user1",
+       "password": "admin",
+       "email": "user2@lsdsdsdweo11l.ru",
+       "lastName": "user2",
+       "firstName": "user2",
+       "roleId": "2"
+       }
 
 Full list of params that can be added (some of them can be nullable)
 
-    data class UserRegistrationRequestDto(
-    val username: String,
-    var password: String,
-    val email: String,
-    val lastName: String,
-    val firstName: String,
-    val middleName: String?,
-    val organisation: String?,
-    val position: String?,
-    val phone: String?,
-    val roleId: Int,
-    )
+       data class UserRegistrationRequestDto(
+       val username: String,
+       var password: String,
+       val email: String,
+       val lastName: String,
+       val firstName: String,
+       val middleName: String?,
+       val organisation: String?,
+       val position: String?,
+       val phone: String?,
+       val roleId: Int,
+       )
 
 "1" role id = ROLE_ADMIN
 "2" role id = ROLE_USER
