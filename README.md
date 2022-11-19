@@ -115,29 +115,29 @@ http://localhost:7080/auth/login?username=admin&password=admin
 #### Registration of new user http://localhost:7080/auth/registration (POST)
 Request:
 
-           {
-           "username": "user1",
-           "password": "admin",
-           "email": "user2@lsdsdsdweo11l.ru",
-           "lastName": "user2",
-           "firstName": "user2",
-           "roleId": "2"
-           }
+       {
+       "username": "user1",
+       "password": "admin",
+       "email": "user2@lsdsdsdweo11l.ru",
+       "lastName": "user2",
+       "firstName": "user2",
+       "roleId": "2"
+       }
 
 Full list of params that can be added (some of them can be nullable)
 
-           data class UserRegistrationRequestDto(
-           val username: String,
-           var password: String,
-           val email: String,
-           val lastName: String,
-           val firstName: String,
-           val middleName: String?,
-           val organisation: String?,
-           val position: String?,
-           val phone: String?,
-           val roleId: Int,
-           )
+       data class UserRegistrationRequestDto(
+       val username: String,
+       var password: String,
+       val email: String,
+       val lastName: String,
+       val firstName: String,
+       val middleName: String?,
+       val organisation: String?,
+       val position: String?,
+       val phone: String?,
+       val roleId: Int,
+       )
 
 "1" role id = ROLE_ADMIN
 "2" role id = ROLE_USER
