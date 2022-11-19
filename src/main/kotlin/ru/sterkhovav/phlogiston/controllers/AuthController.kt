@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import ru.sterkhovav.phlogiston.dto.UserDto
 import ru.sterkhovav.phlogiston.dto.UserRegistrationRequestDto
@@ -27,22 +26,6 @@ class AuthController(
         userRegistrationRequestDto.password = passwordEncoder.encode(userRegistrationRequestDto.password)
         userServiceImpl.register(userRegistrationRequestDto)
         return ResponseEntity<ResponseMessage>(ResponseMessage("User successfully saved"), HttpStatus.OK)
-    }
-
-    @GetMapping("/loginError")
-    fun loginError(): ResponseEntity<ResponseMessage> {
-        return ResponseEntity<ResponseMessage>(
-            ResponseMessage("Username or password is incorrect"),
-            HttpStatus.UNAUTHORIZED
-        )
-    }
-
-    @GetMapping("/loginSuccess")
-    fun loginSuccess(): ResponseEntity<ResponseMessage> {
-        return ResponseEntity<ResponseMessage>(
-            ResponseMessage("${SecurityContextHolder.getContext().authentication.name} login success"),
-            HttpStatus.OK
-        )
     }
 
     @GetMapping("/get-user")

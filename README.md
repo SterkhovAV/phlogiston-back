@@ -30,7 +30,7 @@ If you don't want to change base-login-password:
 now database and user created!
 
 ### problems solving
- Data base drop instruction:
+ Data base clear instruction:
     start SQL Shell (login to database "postgres" under login "postgres" and your password)
 
         DROP DATABASE phlogiston;

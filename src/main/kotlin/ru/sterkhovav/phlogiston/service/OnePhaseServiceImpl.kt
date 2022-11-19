@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service
 import ru.sterkhovav.phlogiston.dao.repository.OnePhaseResultRepository
 import ru.sterkhovav.phlogiston.dto.OnePhaseRequestDto
 import ru.sterkhovav.phlogiston.dto.OnePhaseResultDto
-import ru.sterkhovav.phlogiston.waterSteamCounter.OnePhaseParam
-import ru.sterkhovav.phlogiston.waterSteamCounter.countOnePhaseParams
+import ru.sterkhovav.phlogiston.utils.OnePhaseParam
+import ru.sterkhovav.phlogiston.waterSteamCounter.countOnePhaseParamsPT
 
 interface OnePhaseService {
     fun countParams(request: OnePhaseRequestDto): OnePhaseResultDto
@@ -19,38 +19,17 @@ class OnePhaseServiceImpl(
 ) : OnePhaseService {
 
     override fun countParams(request: OnePhaseRequestDto): OnePhaseResultDto {
-        return OnePhaseResultDto(
-            pressure = request.pressure,
-            temperature = request.temperature,
-            specificVolume = if (request.specificVolumeConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_volume
-            ) else null,
-            density = if (request.densityConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.density
-            ) else null,
-            specificEntropy = if (request.specificEntropyConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_entropy
-            ) else null,
-            specificEnthalpy = if (request.specificEnthalpyConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_enthalpy
-            ) else null,
-            specificInternalEnergy = if (request.specificInternalEnergyConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_internal_energy
-            ) else null,
-            specificHeatCapacityP = if (request.specificHeatCapacityPConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_heat_capacity_constant_pressure
-            ) else null,
-            specificHeatCapacityV = if (request.specificHeatCapacityVConfim) countOnePhaseParams(
-                request.pressure, request.temperature,
-                OnePhaseParam.specific_heat_capacity_constant_volume
-            ) else null,
-        )
+
+        val initialParams = mutableMapOf<OnePhaseParam, Double>()
+        val pressure = request.initialParams.get(OnePhaseParam.PRESSURE)
+        val temperature = request.initialParams.get(OnePhaseParam.TEMPERATURE)
+        initialParams.put(OnePhaseParam.PRESSURE, pressure!!)
+        initialParams.put(OnePhaseParam.TEMPERATURE, temperature!!)
+        //TODO(Проверки и другие виды исходных данных)
+
+        val countResult = countOnePhaseParamsPT(pressure,temperature,request.requestParams)
+
+        return OnePhaseResultDto(initialParams,countResult)
     }
 
     override fun save(result: OnePhaseResultDto, username: String) {
