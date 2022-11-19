@@ -12,7 +12,7 @@ Build by Gradle
 - PostgreSQL
 - change in "application.properties"
 
-       spring.datasource.url=your DB adress
+       spring.datasource.url=your DB address
        spring.datasource.username=your login
        spring.datasource.password=your password
 
