@@ -7,7 +7,7 @@ Web-app for counting water and steam properties by IAWSP-97 methodic.
 Stack of technoligies: Spring Boot 2.7.5, Spring Security, Hibernate, Spring JPA, Liquibase
 Build by Gradle
 
-### before start
+## before start
 - jdk 1.8+
 - PostgreSQL
 - change in "application.properties"
@@ -29,7 +29,7 @@ If you don't want to change base-login-password:
 
 now database and user created!
 
-### problems solving
+## problems solving
  Data base clear instruction:
     start SQL Shell (login to database "postgres" under login "postgres" and your password)
 
@@ -40,12 +40,64 @@ now database and user created!
         CREATE SCHEMA phlogiston;
         GRANT ALL PRIVILEGES ON SCHEMA phlogiston to phlogiston_user;
 
-### API
-
-API
+## API
 Base address - http://localhost:7080/ (you can change it in "application.properties")
 
+### Authentication and users API 
 
+
+#### Authentication of user http://localhost:7080/auth/login (POST)
+with params "username" and "password"
+    http://localhost:7080/auth/login?username=admin&password=admin
+
+result:
+ - success 
+
+
+#### Registration of new user http://localhost:7080/auth/registration (POST)
+Request:
+
+       {
+       "username": "user1",
+       "password": "admin",
+       "email": "user2@lsdsdsdweo11l.ru",
+       "lastName": "user2",
+       "firstName": "user2",
+       }
+
+Full list of params that can be added (some of them can be nullable(?))
+
+        username: String (max size 30)
+        password: String 
+        email: String (max size 45)
+        lastName: String (max size 50)
+        firstName: String (max size 50)
+        middleName: String? (max size 50)
+        organisation: String? (max size 70)
+        position: String? (max size 70)
+        phone: String? (max size 50)
+
+Success answer (with 200 HTTP Status):
+
+    {"message": "User successfully saved, activation link sent to your email"} 
+
+Error answer is something like this (with 400 HTTP Status):
+
+    {
+    "messages": [
+        "User with this name exists",
+        "User with this email exists"
+        ]
+    }
+
+!!After registration user is not active and must be activated through activation link that was sent to email.
+
+#### Activation of new user http://localhost:7080/auth/activate?activation_code=<generated UUID> (GET)
+
+#### Get authenticated user info http://localhost:7080/auth/get-user (GET)
+
+
+### Count API
 #### Count one phase params - http://localhost:7080/onePhase/calc (POST)
 Request:
 
@@ -60,7 +112,6 @@ Request:
 Now, as initial params you can use only temperature and pressure.
 !! Temperature in K !!
 !! Pressure in MPa !!
-
 
 You can add to request this params if it needable:
 
@@ -105,42 +156,10 @@ Answer will be 200 HTTP status with "Saved" message
 
 Answer will be empty list or results list
 
-#### Authentication of user http://localhost:7080/auth/login (POST)
-with params "username" and "password"
 
-http://localhost:7080/auth/login?username=admin&password=admin
 
-#### Get authenticated user info http://localhost:7080/auth/get-user (GET)
 
-#### Registration of new user http://localhost:7080/auth/registration (POST)
-Request:
 
-       {
-       "username": "user1",
-       "password": "admin",
-       "email": "user2@lsdsdsdweo11l.ru",
-       "lastName": "user2",
-       "firstName": "user2",
-       "roleId": "2"
-       }
 
-Full list of params that can be added (some of them can be nullable)
-
-       data class UserRegistrationRequestDto(
-       val username: String,
-       var password: String,
-       val email: String,
-       val lastName: String,
-       val firstName: String,
-       val middleName: String?,
-       val organisation: String?,
-       val position: String?,
-       val phone: String?,
-       val roleId: Int,
-       )
-
-"1" role id = ROLE_ADMIN
-"2" role id = ROLE_USER
-!!! NOW OPEN ADMIN REGISTRATION FOR TESTS, THIS WILL BE CHANGED IN FUTURE
 
 

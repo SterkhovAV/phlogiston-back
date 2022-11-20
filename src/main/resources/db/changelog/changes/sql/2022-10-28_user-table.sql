@@ -20,7 +20,7 @@ CREATE TABLE "phlogiston_users"
     "last_name"                 varchar(50)              NOT NULL,
     "first_name"                varchar(50)              NOT NULL,
     "middle_name"               varchar(50) NULL,
-    "organisation"              varchar(500) NULL,
+    "organisation"              varchar(70) NULL,
     "position"                  varchar(70) NULL,
     "phone"                     varchar(50) NULL,
     "create_date"               timestamp with time zone NOT NULL,
@@ -28,10 +28,11 @@ CREATE TABLE "phlogiston_users"
     "role_id"                   bigint                   NOT NULL,
     "failed_login_counter"      int                      NOT NULL,
     "invalid_password_time"     timestamp with time zone NULL,
+    "uuid"                      UUID                     NOT NULL,
 
     CONSTRAINT "PK_phlogiston_user" PRIMARY KEY ("id"),
-    CONSTRAINT "AK1_phlogiston_user" UNIQUE ("username")
+    CONSTRAINT "AK1_phlogiston_user" UNIQUE ("username"),
+    CONSTRAINT "AK2_phlogiston_user" UNIQUE ("uuid")
 );
-
 
 

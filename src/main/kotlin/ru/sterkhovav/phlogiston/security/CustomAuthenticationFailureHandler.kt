@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import ru.sterkhovav.phlogiston.controllers.AUTH_BASE_API
+import ru.sterkhovav.phlogiston.service.UserDetailsServiceImpl
 import ru.sterkhovav.phlogiston.service.UserServiceImpl
 import java.time.OffsetDateTime
 import javax.servlet.http.HttpServletRequest
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Configuration
 class CustomAuthenticationFailureHandler(
-    private val userServiceImpl: UserServiceImpl
+    private val userDetailsServiceImpl: UserDetailsServiceImpl
 ) : AuthenticationFailureHandler {
 
     override fun onAuthenticationFailure(
@@ -28,10 +29,10 @@ class CustomAuthenticationFailureHandler(
         val data: MutableMap<String, String> = HashMap()
         data["timestamp"] = OffsetDateTime.now().toString()
         try {
-            userServiceImpl.getUserByUsername(request.getParameter("username"))
-            data["message"] = "Password is incorrect"
+            userDetailsServiceImpl.loadUserByUsername(request.getParameter("username"))
+            data["message"] = "Incorrect password"
         } catch (e: UsernameNotFoundException) {
-            data["message"] = "User is not found"
+            data["message"] = "User not found"
         }
         response.outputStream
             .println(ObjectMapper().writeValueAsString(data))

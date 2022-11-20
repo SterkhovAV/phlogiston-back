@@ -4,19 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
-import ru.sterkhovav.phlogiston.controllers.AUTH_BASE_API
-import ru.sterkhovav.phlogiston.utils.ResponseMessage
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
+import ru.sterkhovav.phlogiston.service.UserDetailsServiceImpl
 import java.time.OffsetDateTime
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Configuration
 class CustomAuthenticationSuccessHandler(
+    private val userDetailsServiceImpl: UserDetailsServiceImpl
 ) : AuthenticationSuccessHandler {
 
     override fun onAuthenticationSuccess(
@@ -24,10 +22,18 @@ class CustomAuthenticationSuccessHandler(
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        response!!.status = HttpStatus.OK.value()
+        val status = userDetailsServiceImpl.getUserStatus(SecurityContextHolder.getContext().authentication.name)
         val data: MutableMap<String, String> = HashMap()
         data["timestamp"] = OffsetDateTime.now().toString()
-        data["message"] = "${SecurityContextHolder.getContext().authentication.name} login success"
+        if (!status) {
+            response!!.status = HttpStatus.UNAUTHORIZED.value()
+            val auth = SecurityContextHolder.getContext().authentication
+            data["message"] = "${SecurityContextHolder.getContext().authentication.name} didn't activated"
+            if (auth != null) { SecurityContextLogoutHandler().logout(request, response, auth) }
+        } else {
+            response!!.status = HttpStatus.OK.value()
+            data["message"] = "${SecurityContextHolder.getContext().authentication.name} login success"
+        }
         response.outputStream.println(ObjectMapper().writeValueAsString(data))
     }
 }

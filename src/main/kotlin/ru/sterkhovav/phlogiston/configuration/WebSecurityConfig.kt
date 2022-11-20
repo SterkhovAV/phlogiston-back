@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import ru.sterkhovav.phlogiston.controllers.AUTH_BASE_API
 import ru.sterkhovav.phlogiston.controllers.BASE_API
@@ -22,7 +21,6 @@ import ru.sterkhovav.phlogiston.service.UserServiceImpl
 @EnableWebSecurity
 class WebSecurityConfig(
     val userDetailsServiceImpl: UserDetailsServiceImpl,
-    private val userServiceImpl: UserServiceImpl
 ) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
@@ -31,12 +29,14 @@ class WebSecurityConfig(
             .authorizeRequests()
             .antMatchers("/", "/js/**", "/js/**", "$BASE_API/")
             .permitAll()
-            .anyRequest().permitAll()
+            .antMatchers("$AUTH_BASE_API/registration", "$AUTH_BASE_API/activate")
+            .permitAll()
+            .anyRequest().authenticated()
             .and().exceptionHandling().authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             .and().formLogin()
-            .successHandler(CustomAuthenticationSuccessHandler())
-            .failureHandler(CustomAuthenticationFailureHandler(userServiceImpl))
-        .loginProcessingUrl("${AUTH_BASE_API}/login")
+            .successHandler(CustomAuthenticationSuccessHandler(userDetailsServiceImpl))
+            .failureHandler(CustomAuthenticationFailureHandler(userDetailsServiceImpl))
+            .loginProcessingUrl("${AUTH_BASE_API}/login")
             .and().logout().logoutUrl("${AUTH_BASE_API}/logout")
             .logoutSuccessUrl("/")
             .deleteCookies("JSESSIONID")
@@ -48,6 +48,7 @@ class WebSecurityConfig(
     }
 
     @Bean
-    fun getPasswordEncoder(): PasswordEncoder? = BCryptPasswordEncoder()
-
+    fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 }

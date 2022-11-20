@@ -6,6 +6,7 @@ import ru.sterkhovav.phlogiston.dao.models.User
 import ru.sterkhovav.phlogiston.dao.repository.RoleRepository
 import ru.sterkhovav.phlogiston.service.RoleServiceImpl
 import java.time.OffsetDateTime
+import java.util.UUID
 
 data class UserLoginRequest(
     val username: String,
@@ -22,14 +23,10 @@ data class UserRegistrationRequestDto(
     val organisation: String?,
     val position: String?,
     val phone: String?,
-    val roleId: Int,
 ) {
-
-
-
-    fun toEntity(role:Role) = User(
+    fun toEntity(role:Role, uuid: UUID) = User(
         username = this.username,
-        active = true,
+        active = false,
         password = this.password,
         email = this.email,
         lastName = this.lastName,
@@ -41,6 +38,7 @@ data class UserRegistrationRequestDto(
         createDate = OffsetDateTime.now(),
         lastTimeUpdatePassword = OffsetDateTime.now(),
         role = role,
+        uuid = uuid
     )
 }
 

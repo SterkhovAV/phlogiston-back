@@ -2,6 +2,7 @@ package ru.sterkhovav.phlogiston.dao.models
 
 import ru.sterkhovav.phlogiston.dto.UserDto
 import java.time.OffsetDateTime
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -58,6 +59,9 @@ data class User(
 
     @field:Column(name = "invalid_password_time")
     var invalidPasswordTime: OffsetDateTime? = null,
+
+    @field:Column(name = "uuid")
+    var uuid: UUID
 
     ) {
     fun toDto() = UserDto(
