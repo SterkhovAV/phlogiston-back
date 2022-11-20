@@ -92,7 +92,7 @@ Error answer is something like this (with 400 HTTP Status):
 
 !!After registration user is not active and must be activated through activation link that was sent to email.
 
-#### Activation of new user http://localhost:7080/auth/activate?activation_code=<generated UUID> (GET)
+#### Activation of new user http://localhost:7080/auth/activate?activation_code=generated_UUID (GET)
 
 #### Get authenticated user info http://localhost:7080/auth/get-user (GET)
 
