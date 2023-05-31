@@ -28,7 +28,7 @@ CREATE TABLE "phlogiston_users"
     "role_id"                   bigint                   NOT NULL,
     "failed_login_counter"      int                      NOT NULL,
     "invalid_password_time"     timestamp with time zone NULL,
-    "uuid"                      UUID                     NOT NULL,
+    "uuid"                      UUID                     NULL,
 
     CONSTRAINT "PK_phlogiston_user" PRIMARY KEY ("id"),
     CONSTRAINT "AK1_phlogiston_user" UNIQUE ("username"),

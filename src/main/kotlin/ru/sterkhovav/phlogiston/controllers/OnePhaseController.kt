@@ -7,13 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import ru.sterkhovav.phlogiston.dto.OnePhaseRequestDto
 import ru.sterkhovav.phlogiston.dto.OnePhaseResultDto
-import ru.sterkhovav.phlogiston.service.OnePhaseServiceImpl
+import ru.sterkhovav.phlogiston.service.OnePhaseService
 
 
 @RestController
 @RequestMapping(path = [ONE_PHASE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class OnePhaseController(
-    private val service: OnePhaseServiceImpl,
+    private val service: OnePhaseService,
 ) {
 
     @PostMapping("/calc")

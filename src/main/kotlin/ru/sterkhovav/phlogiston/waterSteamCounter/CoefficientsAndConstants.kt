@@ -5,7 +5,6 @@ import java.lang.Math.pow
 import kotlin.math.ln
 
 
-
 //Коэффициенты и показатели степени для основного уравнения области 1 (жидкость)
 data class firstZoneCoefficientsElem(val I1: Int, val J1: Int, val n1: Double)
 

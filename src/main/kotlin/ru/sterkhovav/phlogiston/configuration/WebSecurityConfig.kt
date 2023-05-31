@@ -13,6 +13,7 @@ import ru.sterkhovav.phlogiston.controllers.AUTH_BASE_API
 import ru.sterkhovav.phlogiston.controllers.BASE_API
 import ru.sterkhovav.phlogiston.security.CustomAuthenticationFailureHandler
 import ru.sterkhovav.phlogiston.security.CustomAuthenticationSuccessHandler
+import ru.sterkhovav.phlogiston.service.EmailServiceImpl
 import ru.sterkhovav.phlogiston.service.UserDetailsServiceImpl
 import ru.sterkhovav.phlogiston.service.UserServiceImpl
 
@@ -20,7 +21,8 @@ import ru.sterkhovav.phlogiston.service.UserServiceImpl
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    val userDetailsServiceImpl: UserDetailsServiceImpl,
+    private val userDetailsServiceImpl: UserDetailsServiceImpl,
+    private val emailServiceImpl: EmailServiceImpl,
 ) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
@@ -34,7 +36,7 @@ class WebSecurityConfig(
             .anyRequest().authenticated()
             .and().exceptionHandling().authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             .and().formLogin()
-            .successHandler(CustomAuthenticationSuccessHandler(userDetailsServiceImpl))
+            .successHandler(CustomAuthenticationSuccessHandler(emailServiceImpl,userDetailsServiceImpl))
             .failureHandler(CustomAuthenticationFailureHandler(userDetailsServiceImpl))
             .loginProcessingUrl("${AUTH_BASE_API}/login")
             .and().logout().logoutUrl("${AUTH_BASE_API}/logout")

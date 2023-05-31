@@ -20,4 +20,9 @@ class GlobalExceptionHandler {
     fun catchResourceNotFoundException(e: UserRoleNotFoundException): ResponseEntity<ResponseMessage> {
         return ResponseEntity<ResponseMessage>(ResponseMessage(e.error), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(ActivationFailedException::class)
+    fun catchActivationFailedException(e: ActivationFailedException): ResponseEntity<ResponseMessage> {
+        return ResponseEntity<ResponseMessage>(ResponseMessage(e.error), HttpStatus.BAD_REQUEST)
+    }
 }

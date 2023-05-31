@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import ru.sterkhovav.phlogiston.dto.UserDto
 import ru.sterkhovav.phlogiston.dto.UserRegistrationRequestDto
-import ru.sterkhovav.phlogiston.service.UserServiceImpl
+import ru.sterkhovav.phlogiston.service.UserService
 import ru.sterkhovav.phlogiston.utils.ResponseMessage
 import java.util.*
 
@@ -15,7 +15,7 @@ import java.util.*
 @RestController
 @RequestMapping(path = [AUTH_BASE_API])
 class AuthController(
-    private val userServiceImpl: UserServiceImpl,
+    private val userService: UserService,
     private val passwordEncoder: PasswordEncoder,
 ) {
 
@@ -24,7 +24,7 @@ class AuthController(
         @RequestBody userRegistrationRequestDto: UserRegistrationRequestDto,
     ): ResponseEntity<ResponseMessage> {
         userRegistrationRequestDto.password = passwordEncoder.encode(userRegistrationRequestDto.password)
-        userServiceImpl.register(userRegistrationRequestDto)
+        userService.register(userRegistrationRequestDto)
         return ResponseEntity<ResponseMessage>(
             ResponseMessage("User successfully saved, activation link sent to your email"),
             HttpStatus.OK
@@ -33,14 +33,14 @@ class AuthController(
 
     @GetMapping("/get-user")
     fun getUser(): UserDto {
-        return userServiceImpl.getUserByUsername(SecurityContextHolder.getContext().authentication.name)
+        return userService.getUserByUsername(SecurityContextHolder.getContext().authentication.name)
     }
 
     @GetMapping("/activate")
     fun getUser(
         @RequestParam activation_code: UUID
-    ):ResponseEntity<ResponseMessage> {
-        userServiceImpl.activateUser(activation_code)
+    ): ResponseEntity<ResponseMessage> {
+        userService.activateUser(activation_code)
         return ResponseEntity<ResponseMessage>(
             ResponseMessage("User successfully activated"),
             HttpStatus.OK

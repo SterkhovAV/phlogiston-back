@@ -3,6 +3,7 @@ package ru.sterkhovav.phlogiston.service
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import ru.sterkhovav.phlogiston.controllers.ACCOUNT_ACTIVATION_API
 import ru.sterkhovav.phlogiston.controllers.BASE_URL
@@ -10,7 +11,9 @@ import ru.sterkhovav.phlogiston.dao.models.User
 import ru.sterkhovav.phlogiston.dao.repository.UserRepository
 import ru.sterkhovav.phlogiston.dto.UserDto
 import ru.sterkhovav.phlogiston.dto.UserRegistrationRequestDto
+import ru.sterkhovav.phlogiston.utils.ActivationFailedException
 import ru.sterkhovav.phlogiston.utils.UserNotCreatedException
+import java.time.OffsetDateTime
 import java.util.*
 import java.util.regex.Pattern
 
@@ -26,9 +29,9 @@ interface UserService {
 
 @Service
 class UserServiceImpl(
-    private val emailServiceImpl: EmailServiceImpl,
+    private val emailService: EmailService,
     private val userRepository: UserRepository,
-    private val roleServiceImpl: RoleServiceImpl,
+    private val roleService: RoleService,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) : UserService {
 
@@ -90,8 +93,8 @@ class UserServiceImpl(
         if (errors.isNotEmpty()) throw UserNotCreatedException(errors)
         validateUser(userRegistrationRequest)
         val uuid = UUID.randomUUID()
-        userRepository.save(userRegistrationRequest.toEntity(roleServiceImpl.getRoleById(2), uuid))
-        emailServiceImpl.sendMimeMessage(
+        userRepository.save(userRegistrationRequest.toEntity(roleService.getRoleById(2), uuid))
+        emailService.sendMimeMessage(
             userRegistrationRequest.email,
             "Your account activation link",
             "$BASE_URL$ACCOUNT_ACTIVATION_API?activation_code=$uuid"
@@ -107,20 +110,21 @@ class UserServiceImpl(
         return userRepository.getByEmail(email) != null
     }
 
+    @Transactional
     override fun activateUser(activation_code: UUID) {
-        val user: User = userRepository.getByUuid(activation_code) ?: throw UsernameNotFoundException("User not found")
-        println("sdsdsdsd")
+        val user: User = userRepository.getByUuid(activation_code) ?: throw ActivationFailedException()
         user.active = true
+        user.uuid = null
         userRepository.save(user)
     }
 
 
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
-//    fun changePassword(user: User, newPassword: String?) {
-//        user.password = bCryptPasswordEncoder.encode(newPassword)
-//        user.lastTimeUpdatePassword = OffsetDateTime.now()
-//        userRepository.save(user)
-//    }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    fun changePassword(user: User, newPassword: String?) {
+        user.password = bCryptPasswordEncoder.encode(newPassword)
+        user.lastTimeUpdatePassword = OffsetDateTime.now()
+        userRepository.save(user)
+    }
 }
 
 

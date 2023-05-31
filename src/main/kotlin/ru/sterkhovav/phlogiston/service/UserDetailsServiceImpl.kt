@@ -4,9 +4,9 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import ru.sterkhovav.phlogiston.dao.models.User
 import ru.sterkhovav.phlogiston.dao.repository.UserRepository
 import ru.sterkhovav.phlogiston.security.UserDetailsImpl
+import java.util.UUID
 
 @Service
 class UserDetailsServiceImpl(
@@ -19,7 +19,14 @@ class UserDetailsServiceImpl(
     }
 
     fun getUserStatus(username: String): Boolean {
-        val status = userRepository.getByUsername(username)?.active ?: throw UsernameNotFoundException("User not found")
-        return status
+        return userRepository.getByUsername(username)?.active ?: throw UsernameNotFoundException("User not found")
+    }
+
+    fun getUserEmail(username: String): String {
+        return userRepository.getByUsername(username)?.email ?: throw UsernameNotFoundException("User not found")
+    }
+
+    fun getUserUUID(username: String): UUID {
+        return userRepository.getByUsername(username)?.uuid ?: throw UsernameNotFoundException("User not found")
     }
 }

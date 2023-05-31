@@ -61,7 +61,7 @@ data class User(
     var invalidPasswordTime: OffsetDateTime? = null,
 
     @field:Column(name = "uuid")
-    var uuid: UUID
+    var uuid: UUID?
 
     ) {
     fun toDto() = UserDto(
