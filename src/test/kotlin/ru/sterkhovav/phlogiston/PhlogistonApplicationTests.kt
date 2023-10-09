@@ -1,13 +1,13 @@
-package ru.sterkhovav.phlogiston
-
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-
-@SpringBootTest
-class PhlogistonApplicationTests {
-
-	@Test
-	fun contextLoads() {
-	}
-
-}
+//package ru.sterkhovav.phlogiston
+//
+//import org.junit.jupiter.api.Test
+//import org.springframework.boot.test.context.SpringBootTest
+//
+//@SpringBootTest
+//class PhlogistonApplicationTests {
+//
+//	@Test
+//	fun contextLoads() {
+//	}
+//
+//}

@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+  phlogiston-db:
+    image: postgres:12
+    container_name: 'phlogiston-db'
+    environment:
+      POSTGRES_PASSWORD: 'fos348c'
+      POSTGRES_DB: phlogiston
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  phlogiston-app:
+    build: .
+    image: phlogiston-app:latest
+    container_name: 'phlogiston-app'
+    depends_on:
+      - phlogiston-db
+#    ports:
+#       - "7080:8080"
+    expose:
+      - "8080"
+
+  nginx:
+    image: nginx:latest
+    container_name: 'nginx'
+    ports:
+      - "7080:7080"
+    depends_on:
+      - phlogiston-app
+    volumes:
+      - ./src/main/resources/nginx/nginx.conf:/etc/nginx/nginx.conf

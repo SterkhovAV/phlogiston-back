@@ -15,7 +15,7 @@ class MailConfig {
         mailSender.port = 587
 
         mailSender.username = "sterkhovav18@gmail.com"
-        mailSender.password = "dhexaufrpdmebpjwwub"
+        mailSender.password = "dhexaufrpdmebpjwwub"  /// удалить ауf
 
         val props = mailSender.javaMailProperties
         props["mail.transport.protocol"] = "smtp"
